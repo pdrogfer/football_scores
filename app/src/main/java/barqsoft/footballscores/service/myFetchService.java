@@ -24,6 +24,7 @@ import java.util.Vector;
 
 import barqsoft.footballscores.DatabaseContract;
 import barqsoft.footballscores.R;
+import barqsoft.footballscores.Utilities;
 
 /**
  * Created by yehya khaled on 3/2/2015.
@@ -133,21 +134,6 @@ public class myFetchService extends IntentService
     }
     private void processJSONdata (String JSONdata,Context mContext, boolean isReal)
     {
-        //JSON data
-        // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
-        // be updated. Feel free to use the codes
-        final String BUNDESLIGA1 = "394";
-        final String BUNDESLIGA2 = "395";
-        final String LIGUE1 = "396";
-        final String LIGUE2 = "397";
-        final String PREMIER_LEAGUE = "398";
-        final String PRIMERA_DIVISION = "399";
-        final String SEGUNDA_DIVISION = "400";
-        final String SERIE_A = "401";
-        final String PRIMERA_LIGA = "402";
-        final String Bundesliga3 = "403";
-        final String EREDIVISIE = "404";
-
 
         final String SEASON_LINK = "http://api.football-data.org/alpha/soccerseasons/";
         final String MATCH_LINK = "http://api.football-data.org/alpha/fixtures/";
@@ -192,11 +178,19 @@ public class myFetchService extends IntentService
                 //add leagues here in order to have them be added to the DB.
                 // If you are finding no data in the app, check that this contains all the leagues.
                 // If it doesn't, that can cause an empty DB, bypassing the dummy data routine.
-                if(     League.equals(PREMIER_LEAGUE)      ||
-                        League.equals(SERIE_A)             ||
-                        League.equals(BUNDESLIGA1)         ||
-                        League.equals(BUNDESLIGA2)         ||
-                        League.equals(PRIMERA_DIVISION)     )
+                if(     League.equals(String.valueOf(Utilities.BUNDESLIGA_1))         ||
+                        League.equals(String.valueOf(Utilities.BUNDESLIGA_2))         ||
+                        League.equals(String.valueOf(Utilities.BUNDESLIGA_3))         ||
+                        League.equals(String.valueOf(Utilities.LIGUE_1))              ||
+                        League.equals(String.valueOf(Utilities.LIGUE_2))              ||
+                        League.equals(String.valueOf(Utilities.PREMIER_LEAGUE))       ||
+                        League.equals(String.valueOf(Utilities.PRIMERA_DIVISION))     ||
+                        League.equals(String.valueOf(Utilities.SEGUNDA_DIVISION))     ||
+                        League.equals(String.valueOf(Utilities.SERIE_A))              ||
+                        League.equals(String.valueOf(Utilities.PRIMEIRA_LIGA))        ||
+                        League.equals(String.valueOf(Utilities.EREDIVISIE))           ||
+                        League.equals(String.valueOf(Utilities.CHAMPIONS_LEAGUE))     ||
+                        League.equals(String.valueOf(Utilities.LEAGUE_ONE))          )
                 {
                     match_id = match_data.getJSONObject(LINKS).getJSONObject(SELF).
                             getString("href");
