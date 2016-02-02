@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import barqsoft.footballscores.service.myFetchService;
+
 public class MainActivity extends ActionBarActivity
 {
     public static int selected_match_id;
@@ -48,6 +50,11 @@ public class MainActivity extends ActionBarActivity
             Intent start_about = new Intent(this,AboutActivity.class);
             startActivity(start_about);
             return true;
+        }
+
+        if (id == R.id.action_refresh) {
+            Intent service_start = new Intent(this, myFetchService.class);
+            this.startService(service_start);
         }
 
         return super.onOptionsItemSelected(item);

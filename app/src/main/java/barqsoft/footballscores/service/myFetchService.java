@@ -1,10 +1,14 @@
 package barqsoft.footballscores.service;
 
 import android.app.IntentService;
+import android.app.NotificationManager;
+import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
+import android.support.v4.app.NotificationCompat;
 import android.util.Log;
 
 import org.json.JSONArray;
@@ -23,6 +27,8 @@ import java.util.TimeZone;
 import java.util.Vector;
 
 import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.MainActivity;
+import barqsoft.footballscores.MainScreenFragment;
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.Utilities;
 
@@ -119,9 +125,8 @@ public class myFetchService extends IntentService
                     processJSONdata(getString(R.string.dummy_data), getApplicationContext(), false);
                     return;
                 }
-
-
                 processJSONdata(JSON_data, getApplicationContext(), true);
+
             } else {
                 //Could not Connect
                 Log.d(LOG_TAG, "Could not connect to server.");
@@ -164,12 +169,10 @@ public class myFetchService extends IntentService
         try {
             JSONArray matches = new JSONObject(JSONdata).getJSONArray(FIXTURES);
 
-
             //ContentValues to be inserted
             Vector<ContentValues> values = new Vector <ContentValues> (matches.length());
             for(int i = 0;i < matches.length();i++)
             {
-
                 JSONObject match_data = matches.getJSONObject(i);
                 League = match_data.getJSONObject(LINKS).getJSONObject(SOCCER_SEASON).
                         getString("href");
@@ -249,7 +252,6 @@ public class myFetchService extends IntentService
                     //Log.v(LOG_TAG,Away);
                     //Log.v(LOG_TAG,Home_goals);
                     //Log.v(LOG_TAG,Away_goals);
-
                     values.add(match_values);
                 }
             }
@@ -260,12 +262,32 @@ public class myFetchService extends IntentService
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
             //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
+            displayNotification();
         }
         catch (JSONException e)
         {
             Log.e(LOG_TAG,e.getMessage());
         }
 
+    }
+
+    private void displayNotification() {
+        NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
+        mBuilder.setSmallIcon(R.mipmap.ball)  /* Icon made by Freepik from www.flaticon.com */
+                .setContentTitle("Football Scores")
+                .setContentText("Football scores data are up-to-date");
+
+        Intent resultIntent = new Intent(this, MainActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
+        stackBuilder.addParentStack(MainActivity.class);
+
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        mBuilder.setContentIntent(resultPendingIntent);
+
+        NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
+        int notificationID = 0;
+        notificationManager.notify(notificationID, mBuilder.build());
     }
 }
 
