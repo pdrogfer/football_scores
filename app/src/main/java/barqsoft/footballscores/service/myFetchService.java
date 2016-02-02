@@ -1,12 +1,16 @@
 package barqsoft.footballscores.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.TaskStackBuilder;
 import android.content.ContentValues;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.media.RingtoneManager;
 import android.net.Uri;
 import android.support.v4.app.NotificationCompat;
 import android.util.Log;
@@ -272,21 +276,23 @@ public class myFetchService extends IntentService
     }
 
     private void displayNotification() {
+        int notificationID = 1;
+        Bitmap bm = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher);
+        Uri notificationSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.mipmap.ball)  /* Icon made by Freepik from www.flaticon.com */
-                .setContentTitle("Football Scores")
-                .setContentText("Football scores data are up-to-date");
+                .setLargeIcon(bm)
+                .setVibrate(new long[] {0, 500})
+//              .setSound(notificationSound)
+                .setTicker("Football Scores data has been updated")
+                .setContentTitle(getString(R.string.notification_title))
+                .setContentText(getString(R.string.notification_text));
 
         Intent resultIntent = new Intent(this, MainActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(this);
-        stackBuilder.addParentStack(MainActivity.class);
-
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        PendingIntent resultPendingIntent = PendingIntent.getActivity(this, 0, resultIntent, 0);// stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
         mBuilder.setContentIntent(resultPendingIntent);
 
         NotificationManager notificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        int notificationID = 0;
         notificationManager.notify(notificationID, mBuilder.build());
     }
 }
