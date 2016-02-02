@@ -130,7 +130,8 @@ public class myFetchService extends IntentService
                     return;
                 }
                 processJSONdata(JSON_data, getApplicationContext(), true);
-
+                // TODO: 2/02/16 call displayNotification just once (somewhere else?) 
+                displayNotification();
             } else {
                 //Could not Connect
                 Log.d(LOG_TAG, "Could not connect to server.");
@@ -266,7 +267,6 @@ public class myFetchService extends IntentService
                     DatabaseContract.BASE_CONTENT_URI,insert_data);
 
             //Log.v(LOG_TAG,"Succesfully Inserted : " + String.valueOf(inserted_data));
-            displayNotification();
         }
         catch (JSONException e)
         {
