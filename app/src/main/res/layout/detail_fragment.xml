@@ -30,6 +30,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="20dp">
         <Button
+            android:contentDescription="Share fixture details"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
@@ -38,7 +39,7 @@
         android:id="@+id/share_button"
         android:drawableLeft="@android:drawable/ic_menu_share"
         android:paddingLeft="120dp"
-        android:paddingRight="120dp"/>
+        android:paddingRight="120dp" />
     </FrameLayout>
 
 </LinearLayout>
