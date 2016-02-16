@@ -3,22 +3,40 @@ package barqsoft.footballscores;
 /**
  * Created by yehya khaled on 3/3/2015.
  */
-public class Utilies
+public class Utilities
 {
-    public static final int SERIE_A = 357;
-    public static final int PREMIER_LEGAUE = 354;
-    public static final int CHAMPIONS_LEAGUE = 362;
-    public static final int PRIMERA_DIVISION = 358;
-    public static final int BUNDESLIGA = 351;
+    // This set of league codes is for the 2015/2016 season. In fall of 2016, they will need to
+    // be updated. Feel free to use the codes
+    public static final int BUNDESLIGA_1 = 394;
+    public static final int BUNDESLIGA_2 = 395;
+    public static final int BUNDESLIGA_3 = 403;
+    public static final int LIGUE_1 = 396;
+    public static final int LIGUE_2 = 397;
+    public static final int PREMIER_LEAGUE = 398;
+    public static final int PRIMERA_DIVISION = 399;
+    public static final int SEGUNDA_DIVISION = 400;
+    public static final int SERIE_A = 401;
+    public static final int PRIMEIRA_LIGA = 402;
+    public static final int EREDIVISIE = 404;
+    public static final int CHAMPIONS_LEAGUE = 405;
+    public static final int LEAGUE_ONE = 425;
     public static String getLeague(int league_num)
     {
         switch (league_num)
         {
-            case SERIE_A : return "Seria A";
-            case PREMIER_LEGAUE : return "Premier League";
-            case CHAMPIONS_LEAGUE : return "UEFA Champions League";
-            case PRIMERA_DIVISION : return "Primera Division";
-            case BUNDESLIGA : return "Bundesliga";
+            case BUNDESLIGA_1 : return "Bundesliga 1";
+            case BUNDESLIGA_2 : return "Bundesliga 2";
+            case BUNDESLIGA_3 : return "Bundesliga 3";
+            case LIGUE_1: return "Ligue 1";
+            case LIGUE_2: return "Ligue 2";
+            case PREMIER_LEAGUE: return "Premier League";
+            case PRIMERA_DIVISION: return "Primera Division";
+            case SEGUNDA_DIVISION: return "Segunda Division";
+            case SERIE_A: return "Serie A";
+            case PRIMEIRA_LIGA: return "Primeira Liga";
+            case EREDIVISIE: return "Eredivisie";
+            case CHAMPIONS_LEAGUE: return "Champions League";
+            case LEAGUE_ONE: return "League One";
             default: return "Not known League Please report";
         }
     }
