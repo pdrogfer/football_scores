@@ -130,7 +130,7 @@ public class myFetchService extends IntentService
                     return;
                 }
                 processJSONdata(JSON_data, getApplicationContext(), true);
-                // TODO: 2/02/16 call displayNotification just once (somewhere else?) 
+                // TODO: 2/02/16 call displayNotification just once (somewhere else?)
                 displayNotification();
             } else {
                 //Could not Connect
