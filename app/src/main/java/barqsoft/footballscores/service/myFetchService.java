@@ -282,7 +282,7 @@ public class myFetchService extends IntentService
         NotificationCompat.Builder mBuilder = new NotificationCompat.Builder(this);
         mBuilder.setSmallIcon(R.mipmap.ball)  /* Icon made by Freepik from www.flaticon.com */
                 .setLargeIcon(bm)
-                .setVibrate(new long[] {0, 500})
+//              .setVibrate(new long[] {0, 500})
 //              .setSound(notificationSound)
                 .setTicker("Football Scores data has been updated")
                 .setContentTitle(getString(R.string.notification_title))
