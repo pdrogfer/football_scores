@@ -1,9 +1,11 @@
-package barqsoft.footballscores;
+package barqsoft.footballscores.widget;
 
 import android.appwidget.AppWidgetManager;
 import android.appwidget.AppWidgetProvider;
 import android.content.Context;
 import android.widget.RemoteViews;
+
+import barqsoft.footballscores.R;
 
 /**
  * Implementation of App Widget functionality.

@@ -1,4 +1,4 @@
-package barqsoft.footballscores.service;
+package barqsoft.footballscores.widget;
 
 import android.annotation.TargetApi;
 import android.appwidget.AppWidgetManager;
@@ -10,7 +10,7 @@ import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import barqsoft.footballscores.R;
-import barqsoft.footballscores.WidgetService;
+import barqsoft.footballscores.widget.WidgetService;
 
 /**
  * Created by pedro on 16/02/16.
