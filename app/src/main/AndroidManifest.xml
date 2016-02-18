@@ -38,6 +38,7 @@
 
         <service android:name=".service.myFetchService" />
 
+        <!-- The broadcast receiver that refers to the widget. -->
         <receiver android:name=".ScoresWidget">
             <intent-filter>
                 <action android:name="android.appwidget.action.APPWIDGET_UPDATE" />
@@ -47,6 +48,12 @@
                 android:name="android.appwidget.provider"
                 android:resource="@xml/scores_widget_info" />
         </receiver>
+
+        <!-- The service that will send the collection data to the widget. It needs the
+             permission android.permission.BIND_REMOTEVIEWS -->
+        <service
+            android:name=".WidgetService"
+            android:permission="android.permission.BIND_REMOTEVIEWS" />
     </application>
 
 </manifest>
