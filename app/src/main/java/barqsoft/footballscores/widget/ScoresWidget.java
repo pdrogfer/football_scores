@@ -22,15 +22,13 @@ public class ScoresWidget extends AppWidgetProvider {
         // Construct the RemoteViews object
         RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.scores_widget);
 
-        // TODO: 19/02/16 this is a static text view. Not working with the dynamic list view
-        // views.setTextViewText(R.id.appwidget_text, widgetText);
-
         // Set up the collection
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.ICE_CREAM_SANDWICH) {
             setRemoteAdapter(context, views);
         } else {
             setRemoteAdapterV11(context, views);
         }
+        // TODO: 19/02/16 create a pending intent (see SimpleWidgetApp) to make a click open the app
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
     }
