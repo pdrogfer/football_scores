@@ -18,7 +18,7 @@ import barqsoft.footballscores.widget.WidgetService;
 public class CollectionWidget extends AppWidgetProvider {
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
-        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.collection_widget);
+        RemoteViews views = new RemoteViews(context.getPackageName(), R.layout.scores_widget);
 //        views.setTextViewText(R.id.appwidget_text, widgetText);
 
         // Set up the collection
