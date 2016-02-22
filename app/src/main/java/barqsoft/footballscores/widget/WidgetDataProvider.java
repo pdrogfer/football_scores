@@ -6,22 +6,30 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Binder;
+import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
 import android.widget.Toast;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.R;
 import barqsoft.footballscores.ScoresProvider;
+import barqsoft.footballscores.scoresAdapter;
 
 /**
  * This acts as the adapter to provide the data to the widget
  */
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
+    private static final String TAG = "football_scores";
     List<String> collection = new ArrayList<>();
     private Cursor data = null;
     Context context;
@@ -46,25 +54,36 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private void initData() {
         collection.clear();
-//        for (int i = 1; i < 11; i++) {
-//            collection.add("ListView item " + i);
-//        }
+        for (int i = 1; i < 11; i++) {
+            collection.add("ListView item " + i);
+        }
 //        try {
 //            // TODO: 19/02/16 provide the actual football data here
 //            final long identityToken = Binder.clearCallingIdentity();
-//            ScoresProvider scoresProvider = new ScoresProvider();
 //            Uri fixtures_by_data = DatabaseContract.scores_table.buildScoreWithDate();
-//            data = scoresProvider.query(fixtures_by_data, DB_COLUMNS, null, null,
+//            data = context.getContentResolver().query(fixtures_by_data, DB_COLUMNS, null, null,
 //                    DatabaseContract.scores_table.DATE_COL + " ASC");
 //            Binder.restoreCallingIdentity(identityToken);
 //        } catch (Exception e) {
-//            Log.i("app", "Error getting data");
+//            Log.i(TAG, "initData: Error getting data");
 //        }
+        String format = "yyyy-MM-dd";
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
+        String today = simpleDateFormat.format(new Date());
+        Log.i(TAG, "initData: dateformat = " + today);
         final long identityToken = Binder.clearCallingIdentity();
-        data = context.getContentResolver().query(
-                DatabaseContract.scores_table.buildScoreWithDate(), null, null, new String[]{"today"}, null);
-        Binder.restoreCallingIdentity(identityToken);
-
+          data = context.getContentResolver().query(
+                  DatabaseContract.scores_table.buildScoreWithDate(), null, null, new String[]{today}, null);
+          Binder.restoreCallingIdentity(identityToken);
+        if (data.getCount() <= 0) {
+            Log.i(TAG, "initData: data cursor is empty: size " + data.getCount());
+        } else {
+            Log.i(TAG, "initData: data ok, size " + data.getCount());
+        }
+        while (data.moveToNext()) {
+            String temp_data = data.getString(scoresAdapter.COL_HOME);
+            collection.add(temp_data);
+        }
     }
 
     @Override
