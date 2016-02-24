@@ -79,11 +79,10 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         while (dataYesterday.moveToNext()) {
             addData(dataYesterday, tempText, collection);
         }
-
-        // TODO: 22/02/16 display full match info and order it by date-time
     }
 
     private void addData(Cursor data, String tempText, List<String> collection) {
+        // TODO: 24/02/16 transform collection in a bi-dimensional array to store home, away and result
         String teamHome = data.getString(ScoresAdapter.COL_HOME);
         String teamAway = data.getString(ScoresAdapter.COL_AWAY);
         String goalsHome = data.getString(ScoresAdapter.COL_HOME_GOALS);
