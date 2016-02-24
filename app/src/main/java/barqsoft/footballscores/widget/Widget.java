@@ -11,7 +11,7 @@ import android.support.annotation.NonNull;
 import android.widget.RemoteViews;
 
 import barqsoft.footballscores.R;
-import barqsoft.footballscores.scoresAdapter;
+import barqsoft.footballscores.ScoresAdapter;
 
 /**
  * Implementation of App Widget functionality.
@@ -46,7 +46,7 @@ public class Widget extends AppWidgetProvider {
     @Override
     public void onReceive(Context context, Intent intent) {
         super.onReceive(context, intent);
-        if (scoresAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
+        if (ScoresAdapter.ACTION_DATA_UPDATED.equals(intent.getAction())) {
             AppWidgetManager appWidgetManager = AppWidgetManager.getInstance(context);
             int[] appWidgetIds = appWidgetManager.getAppWidgetIds(
                     new ComponentName(context, getClass()));

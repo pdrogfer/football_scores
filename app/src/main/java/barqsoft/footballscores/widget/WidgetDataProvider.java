@@ -6,32 +6,29 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Binder;
-import android.provider.ContactsContract;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
-import android.widget.Toast;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
 import barqsoft.footballscores.DatabaseContract;
-import barqsoft.footballscores.R;
-import barqsoft.footballscores.ScoresProvider;
-import barqsoft.footballscores.scoresAdapter;
+import barqsoft.footballscores.ScoresAdapter;
 
 /**
- * This acts as the adapter to provide the data to the widget
+ * This acts as the adapter to provide the dataToday to the widget
  */
 public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory {
 
     private static final String TAG = "football_scores";
     List<String> collection = new ArrayList<>();
-    private Cursor data = null;
+    private Cursor dataToday = null;
+    private Cursor dataYesterday = null;
     Context context;
     Intent intent;
     final String[] DB_COLUMNS = {
@@ -54,37 +51,48 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private void initData() {
         collection.clear();
-        for (int i = 1; i < 11; i++) {
-            collection.add("ListView item " + i);
-        }
-//        try {
-//            // TODO: 19/02/16 provide the actual football data here
-//            final long identityToken = Binder.clearCallingIdentity();
-//            Uri fixtures_by_data = DatabaseContract.scores_table.buildScoreWithDate();
-//            data = context.getContentResolver().query(fixtures_by_data, DB_COLUMNS, null, null,
-//                    DatabaseContract.scores_table.DATE_COL + " ASC");
-//            Binder.restoreCallingIdentity(identityToken);
-//        } catch (Exception e) {
-//            Log.i(TAG, "initData: Error getting data");
-//        }
         String format = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
         String today = simpleDateFormat.format(new Date());
+
+        Calendar cal = Calendar.getInstance();
+        cal.add(Calendar.DATE, -1);
+        String yesterday = simpleDateFormat.format(cal.getTime());
         Log.i(TAG, "initData: dateformat = " + today);
+        Uri fixturesByData = DatabaseContract.scores_table.buildScoreWithDate();
         final long identityToken = Binder.clearCallingIdentity();
-          data = context.getContentResolver().query(
-                  DatabaseContract.scores_table.buildScoreWithDate(), null, null, new String[]{today}, null);
-          Binder.restoreCallingIdentity(identityToken);
-        if (data.getCount() <= 0) {
-            Log.i(TAG, "initData: data cursor is empty: size " + data.getCount());
+        // TODO: 24/02/16 that does not seem an elegant solution to me. Must be a better way 
+        dataToday = context.getContentResolver().query(
+                fixturesByData, DB_COLUMNS, null, new String[]{today}, null);
+        dataYesterday = context.getContentResolver().query(
+                fixturesByData, DB_COLUMNS, null, new String[]{yesterday}, null);
+        Binder.restoreCallingIdentity(identityToken);
+        if (dataToday.getCount() <= 0 && dataYesterday.getCount() <= 0) {
+            Log.i(TAG, "initData: no data");
         } else {
-            Log.i(TAG, "initData: data ok, size " + data.getCount());
+            Log.i(TAG, "initData: data ok");
         }
-        while (data.moveToNext()) {
-            String temp_data = data.getString(scoresAdapter.COL_HOME);
-            collection.add(temp_data);
+        String tempText = null;
+        while (dataToday.moveToNext()) {
+            addData(dataToday, tempText, collection);
         }
+        while (dataYesterday.moveToNext()) {
+            addData(dataYesterday, tempText, collection);
+        }
+
+        // TODO: 22/02/16 display full match info and order it by date-time
     }
+
+    private void addData(Cursor data, String tempText, List<String> collection) {
+        String teamHome = data.getString(ScoresAdapter.COL_HOME);
+        String teamAway = data.getString(ScoresAdapter.COL_AWAY);
+        String goalsHome = data.getString(ScoresAdapter.COL_HOME_GOALS);
+        String goalsAway = data.getString(ScoresAdapter.COL_AWAY_GOALS);
+        //String teamHome = data.getString(ScoresAdapter.COL_HOME);
+        tempText = teamHome + " - " + teamAway;
+        collection.add(tempText);
+    }
+
 
     @Override
     public void onCreate() {
