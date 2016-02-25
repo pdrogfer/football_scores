@@ -24,5 +24,12 @@ public class ViewHolder
         date      = (TextView) view.findViewById(R.id.data_textview);
         home_crest = (ImageView) view.findViewById(R.id.home_crest);
         away_crest = (ImageView) view.findViewById(R.id.away_crest);
+
+        home_name.setContentDescription("home team name");
+        away_name.setContentDescription("away team name");
+        score.setContentDescription("fixture score");
+        date.setContentDescription("fixture date");
+        home_crest.setContentDescription("home team logo");
+        away_crest.setContentDescription("away team logo");
     }
 }

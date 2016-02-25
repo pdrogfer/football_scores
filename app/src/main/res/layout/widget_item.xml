@@ -13,14 +13,14 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="texto 1"
-            android:contentDescription="home team"
+            android:contentDescription="home team name"
             android:gravity="center_vertical"/>
         <TextView
             android:id="@+id/widget_item_team_away"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="texto 2"
-            android:contentDescription="away team"
+            android:contentDescription="away team name"
             android:gravity="center_vertical"/>
     </LinearLayout>
     <TextView
