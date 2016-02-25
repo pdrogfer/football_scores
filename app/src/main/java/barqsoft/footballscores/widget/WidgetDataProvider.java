@@ -72,6 +72,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         if (dataToday.getCount() <= 0 && dataYesterday.getCount() <= 0) {
             Log.i(TAG, "initData: no data");
         }
+
         while (dataToday.moveToNext()) {
             addData(dataToday,  collection);
         }

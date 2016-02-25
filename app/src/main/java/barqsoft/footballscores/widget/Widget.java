@@ -12,6 +12,7 @@ import android.support.annotation.NonNull;
 import android.view.View;
 import android.widget.RemoteViews;
 
+import barqsoft.footballscores.MainActivity;
 import barqsoft.footballscores.R;
 import barqsoft.footballscores.ScoresAdapter;
 
@@ -32,9 +33,13 @@ public class Widget extends AppWidgetProvider {
         } else {
             setRemoteAdapterV11(context, views);
         }
-        // TODO: 19/02/16 create a pending intent (see SimpleWidgetApp) to make a click open the app
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
+
+        // TODO: 25/02/16 not working, see Sunshine
+        Intent launchIntent = new Intent(context, MainActivity.class);
+        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
+        views.setOnClickPendingIntent(R.id.widget_item_layout, pendingIntent);
     }
 
 
