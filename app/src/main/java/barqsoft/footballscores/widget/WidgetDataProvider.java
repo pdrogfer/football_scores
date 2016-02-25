@@ -51,17 +51,16 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 
     private void initData() {
         collection.clear();
+
         String format = "yyyy-MM-dd";
         SimpleDateFormat simpleDateFormat = new SimpleDateFormat(format, Locale.US);
         String today = simpleDateFormat.format(new Date());
-
         Calendar cal = Calendar.getInstance();
         cal.add(Calendar.DATE, -1);
         String yesterday = simpleDateFormat.format(cal.getTime());
-        Log.i(TAG, "initData: dateformat = " + today);
         Uri fixturesByData = DatabaseContract.scores_table.buildScoreWithDate();
         final long identityToken = Binder.clearCallingIdentity();
-        // TODO: 24/02/16 that does not seem an elegant solution to me. Must be a better way 
+        // I am getting the matches for today and yesterday only
         dataToday = context.getContentResolver().query(
                 fixturesByData, DB_COLUMNS, null, new String[]{today}, null);
         dataYesterday = context.getContentResolver().query(
@@ -69,8 +68,6 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         Binder.restoreCallingIdentity(identityToken);
         if (dataToday.getCount() <= 0 && dataYesterday.getCount() <= 0) {
             Log.i(TAG, "initData: no data");
-        } else {
-            Log.i(TAG, "initData: data ok");
         }
         String tempText = null;
         while (dataToday.moveToNext()) {
