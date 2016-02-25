@@ -9,6 +9,7 @@ import android.os.Binder;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
+import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -18,7 +19,9 @@ import java.util.List;
 import java.util.Locale;
 
 import barqsoft.footballscores.DatabaseContract;
+import barqsoft.footballscores.R;
 import barqsoft.footballscores.ScoresAdapter;
+import barqsoft.footballscores.Utilities;
 
 /**
  * This acts as the adapter to provide the dataToday to the widget
@@ -82,10 +85,9 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         // TODO: 24/02/16 transform collection in a bi-dimensional array to store home, away and result
         String teamHome = data.getString(ScoresAdapter.COL_HOME);
         String teamAway = data.getString(ScoresAdapter.COL_AWAY);
-        String goalsHome = data.getString(ScoresAdapter.COL_HOME_GOALS);
-        String goalsAway = data.getString(ScoresAdapter.COL_AWAY_GOALS);
-        //String teamHome = data.getString(ScoresAdapter.COL_HOME);
-        tempText = teamHome + " - " + teamAway;
+        String score = Utilities.getScores(data.getInt(ScoresAdapter.COL_HOME_GOALS),
+                data.getInt(ScoresAdapter.COL_AWAY_GOALS));
+        tempText = teamHome + "," + teamAway + "," + score;
         collection.add(tempText);
     }
 
@@ -113,10 +115,20 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
 //    populate each view in widget dynamically
     @Override
     public RemoteViews getViewAt(int position) {
+        String fixtureData = collection.get(position);
+        Log.i(TAG, "getViewAt: fixtureData = " + fixtureData);
+        String homeTeam = fixtureData.substring(0, fixtureData.indexOf(","));
+        String awayTeam = fixtureData.substring(fixtureData.indexOf(",") + 1, fixtureData.lastIndexOf(","));
+        String result = fixtureData.substring(fixtureData.lastIndexOf(",") + 1);
+
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
-                android.R.layout.simple_list_item_1);
-        remoteView.setTextViewText(android.R.id.text1, collection.get(position));
-        remoteView.setTextColor(android.R.id.text1, Color.BLACK);
+                R.layout.widget_item);
+        remoteView.setTextViewText(R.id.widget_item_team_home, homeTeam);
+        remoteView.setTextViewText(R.id.widget_item_team_away, awayTeam);
+        remoteView.setTextViewText(R.id.widget_item_result, result);
+        remoteView.setTextColor(R.id.widget_item_team_home, Color.BLACK);
+        remoteView.setTextColor(R.id.widget_item_team_away, Color.BLACK);
+        remoteView.setTextColor(R.id.widget_item_result, Color.BLACK);
         return remoteView;
     }
 
