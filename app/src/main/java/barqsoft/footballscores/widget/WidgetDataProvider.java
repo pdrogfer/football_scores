@@ -65,9 +65,9 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         final long identityToken = Binder.clearCallingIdentity();
         // I am getting the matches for today and yesterday only
         dataToday = context.getContentResolver().query(
-                fixturesByData, DB_COLUMNS, null, new String[]{today}, null);
+                fixturesByData, null, null, new String[]{today}, null);
         dataYesterday = context.getContentResolver().query(
-                fixturesByData, DB_COLUMNS, null, new String[]{yesterday}, null);
+                fixturesByData, null, null, new String[]{yesterday}, null);
         Binder.restoreCallingIdentity(identityToken);
         if (dataToday.getCount() <= 0 && dataYesterday.getCount() <= 0) {
             Log.i(TAG, "initData: no data");
