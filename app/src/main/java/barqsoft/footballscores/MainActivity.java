@@ -1,5 +1,6 @@
 package barqsoft.footballscores;
 
+import android.appwidget.AppWidgetManager;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.ActionBarActivity;
@@ -9,6 +10,7 @@ import android.view.MenuItem;
 import android.view.View;
 
 import barqsoft.footballscores.service.myFetchService;
+import barqsoft.footballscores.widget.WidgetDataProvider;
 
 public class MainActivity extends ActionBarActivity
 {

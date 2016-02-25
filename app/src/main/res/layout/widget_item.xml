@@ -7,6 +7,8 @@
         android:layout_width="0dp"
         android:layout_height="match_parent"
         android:layout_weight="4"
+        android:paddingLeft="4dp"
+        android:paddingStart="4dp"
         android:orientation="vertical">
         <TextView
             android:id="@+id/widget_item_team_home"

@@ -72,22 +72,21 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         if (dataToday.getCount() <= 0 && dataYesterday.getCount() <= 0) {
             Log.i(TAG, "initData: no data");
         }
-        String tempText = null;
         while (dataToday.moveToNext()) {
-            addData(dataToday, tempText, collection);
+            addData(dataToday,  collection);
         }
         while (dataYesterday.moveToNext()) {
-            addData(dataYesterday, tempText, collection);
+            addData(dataYesterday,  collection);
         }
     }
 
-    private void addData(Cursor data, String tempText, List<String> collection) {
-        // TODO: 24/02/16 transform collection in a bi-dimensional array to store home, away and result
+    private void addData(Cursor data, List<String> collection) {
+
         String teamHome = data.getString(ScoresAdapter.COL_HOME);
         String teamAway = data.getString(ScoresAdapter.COL_AWAY);
         String score = Utilities.getScores(data.getInt(ScoresAdapter.COL_HOME_GOALS),
                 data.getInt(ScoresAdapter.COL_AWAY_GOALS));
-        tempText = teamHome + "," + teamAway + "," + score;
+        String tempText = teamHome + "," + teamAway + "," + score;
         collection.add(tempText);
     }
 
@@ -120,7 +119,7 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         String homeTeam = fixtureData.substring(0, fixtureData.indexOf(","));
         String awayTeam = fixtureData.substring(fixtureData.indexOf(",") + 1, fixtureData.lastIndexOf(","));
         String result = fixtureData.substring(fixtureData.lastIndexOf(",") + 1);
-
+        Log.i(TAG, "getViewAt: result = " + result);
         RemoteViews remoteView = new RemoteViews(context.getPackageName(),
                 R.layout.widget_item);
         remoteView.setTextViewText(R.id.widget_item_team_home, homeTeam);

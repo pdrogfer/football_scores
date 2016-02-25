@@ -36,16 +36,6 @@
                 android:paddingLeft="@dimen/widget_header_padding"
                 android:paddingEnd="@dimen/widget_header_padding"
                 android:paddingRight="@dimen/widget_header_padding"/>
-
-            <ImageView
-                android:layout_width="0dp"
-                android:layout_height="32dp"
-                android:layout_gravity="center_vertical"
-                android:layout_weight="1"
-                android:src="@android:drawable/stat_notify_sync"
-                android:tint="@color/orange01"
-                android:clickable="true"
-                android:onClick="updateWidgetClick"/>
         </LinearLayout>
         <ListView
             android:id="@+id/widget_list"
