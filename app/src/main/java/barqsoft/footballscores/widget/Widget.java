@@ -9,6 +9,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.os.Build;
 import android.support.annotation.NonNull;
+import android.support.v4.app.TaskStackBuilder;
 import android.view.View;
 import android.widget.RemoteViews;
 
@@ -20,6 +21,8 @@ import barqsoft.footballscores.ScoresAdapter;
  * Implementation of App Widget functionality.
  */
 public class Widget extends AppWidgetProvider {
+
+    public static final String EXTRA_ITEM = "barqsoft.footballscores.widget.EXTRA_ITEM";
 
     static void updateAppWidget(Context context, AppWidgetManager appWidgetManager,
                                 int appWidgetId) {
@@ -33,13 +36,20 @@ public class Widget extends AppWidgetProvider {
         } else {
             setRemoteAdapterV11(context, views);
         }
+
+        // click in widget bar
+        Intent widgetBarIntent = new Intent(context, MainActivity.class);
+        PendingIntent barPendingIntent = PendingIntent.getActivity(context, 0, widgetBarIntent, 0);
+        views.setOnClickPendingIntent(R.id.widget, barPendingIntent);
+
+        // click in list items
+        Intent startActivityIntent = new Intent(context, MainActivity.class);
+        PendingIntent startActivityPendingIntent = PendingIntent.getActivity(context, 0,
+                startActivityIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+        views.setPendingIntentTemplate(R.id.widget_list, startActivityPendingIntent);
+
         // Instruct the widget manager to update the widget
         appWidgetManager.updateAppWidget(appWidgetId, views);
-
-        // TODO: 25/02/16 not working, see Sunshine
-        Intent launchIntent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, launchIntent, 0);
-        views.setOnClickPendingIntent(R.id.widget_item_layout, pendingIntent);
     }
 
 

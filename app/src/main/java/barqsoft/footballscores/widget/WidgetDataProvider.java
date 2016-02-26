@@ -6,6 +6,7 @@ import android.database.Cursor;
 import android.graphics.Color;
 import android.net.Uri;
 import android.os.Binder;
+import android.os.Bundle;
 import android.util.Log;
 import android.widget.RemoteViews;
 import android.widget.RemoteViewsService;
@@ -129,6 +130,14 @@ public class WidgetDataProvider implements RemoteViewsService.RemoteViewsFactory
         remoteView.setTextColor(R.id.widget_item_team_home, Color.BLACK);
         remoteView.setTextColor(R.id.widget_item_team_away, Color.BLACK);
         remoteView.setTextColor(R.id.widget_item_result, Color.BLACK);
+
+        // widget list items click open MainActivity
+        Bundle extras = new Bundle();
+        extras.putInt(Widget.EXTRA_ITEM, position);
+        Intent fillInIntent = new Intent();
+        fillInIntent.putExtras(extras);
+        remoteView.setOnClickFillInIntent(R.id.widget_item_layout, fillInIntent);
+
         return remoteView;
     }
 
